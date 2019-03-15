@@ -1,6 +1,6 @@
 
 /********************************************************
- * 120 asynchronous js
+ * 120 asynchronous js / PSEUDO DATA CALLS
  */
 
  /*
@@ -69,6 +69,7 @@ getRecipe();
   //the argument will be the result of the successful promise 'IDs'
   // prints [523, 883, 432, 974]
   //.catch() is for errors
+  /*
 const getIDs = new Promise((resolve, reject) => {
   setTimeout(() => {
 
@@ -115,7 +116,7 @@ getIDs
   console.log(error);
 })
 
-
+*/
 
 
 /*
@@ -132,3 +133,71 @@ getIDs2.then(IDs => {
   console.log('error');
 })
 */
+//creatted promise with executor function in it. In th eexecutor function you usually have asynchrounous code. In this case it is the setTimeout function. Then always use the resolve function and pass in the data you want returned from the successful/fulfilled promise.
+
+/******************************************************************
+ * REDO OF 120 asynchronous js / PSEUDO DATA CALLS with DOM manipulation
+ */
+const getIDs = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve([523, 883, 432, 974])
+  }, 1500);
+});
+
+//recID gets passed in as ID for the setTimeout function
+const getRecipe = (recID) => {
+  return new Promise((resolve, reject) => {
+    setTimeout((ID) => {
+      const recipe = {title:'Fresh tomato pasta',
+      publisher: 'Jonas'}
+
+      resolve(`${ID}: ${recipe.title}`);    
+    },1500, recID)    
+
+  });
+};
+
+const getRelated = () => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const recipe = {title: 'Italian Pizza', 
+      publisher: 'Jonas'};
+      
+      resolve(recipe);
+    }, 1500);
+
+  })
+};
+
+//promise object 'getIDs' method '.then()' used to handle the fulfilled promise
+//we pass in a callback function in the then method.
+//the argument of the callback function is always the result of the succeccful promise
+//chaining means when you have multiiplr .then() and .catch
+getIDs
+.then((IDs) => {
+  let promiseOne = document.getElementById('promise-one');
+  let promiseOneArray = document.getElementById('promise-one-array');
+
+  //loops through the recipeID array from getIDs promise
+  for (let i = 0; i < IDs.length; i++) {
+    if (i != IDs.length - 1) {
+      promiseOneArray.innerHTML += IDs[i] + ", ";
+    } else {
+      promiseOneArray.innerHTML += IDs[i];
+    }
+  } 
+  promiseOne.innerHTML += ' ' + IDs[2]
+  //this getRecipe() will return a promise
+  return getRecipe(IDs[2]);
+})
+.then((recipe) => {
+  document.getElementById('promise-two').innerHTML = recipe
+  return getRelated()
+})
+.then((related) => {
+  let promiseThree = document.getElementById('promise-three');
+  promiseThree.innerHTML = "Related: " + related.title + " by " + related.publisher
+})
+.catch(error => {
+  console.log('error', error);
+});
