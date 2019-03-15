@@ -1,8 +1,4 @@
-
-/********************************************************
- * 120 asynchronous js / PSEUDO DATA CALLS
- */
-
+// THIS FILE IS USED WIITH INDEX.HTML only
  /*
 //synchronous all the instructions are printed out in order
 const second = () => {
@@ -135,9 +131,12 @@ getIDs2.then(IDs => {
 */
 //creatted promise with executor function in it. In th eexecutor function you usually have asynchrounous code. In this case it is the setTimeout function. Then always use the resolve function and pass in the data you want returned from the successful/fulfilled promise.
 
+
 /******************************************************************
- * REDO OF 120 asynchronous js / PSEUDO DATA CALLS with DOM manipulation
+ * REDO OF 123 asynchronous js / PSEUDO DATA CALLS with DOM manipulation
  */
+
+
 const getIDs = new Promise((resolve, reject) => {
   setTimeout(() => {
     resolve([523, 883, 432, 974])
@@ -173,6 +172,7 @@ const getRelated = () => {
 //we pass in a callback function in the then method.
 //the argument of the callback function is always the result of the succeccful promise
 //chaining means when you have multiiplr .then() and .catch
+
 getIDs
 .then((IDs) => {
   let promiseOne = document.getElementById('promise-one');
@@ -201,3 +201,7 @@ getIDs
 .catch(error => {
   console.log('error', error);
 });
+
+
+/************************************************************
+ * 124 Promises with async/await */ 
